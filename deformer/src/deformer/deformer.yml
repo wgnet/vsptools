@@ -1,0 +1,14 @@
+project_name: ${DEFORMER_PROJECT_NAME}
+engines_dir: ${DEFORMER_ENGINES_DIR:../unreal_engine}
+engines_cache: ${DEFORMER_ENGINES_CACHE:../unreal_engine/.cache}
+engines_storage: ${DEFORMER_ENGINES_STORAGE}
+plugins_storage: ${DEFORMER_PLUGINS_STORAGE}
+plugins_dir: ${DEFORMER_PLUGINS_DIR:Engine\Plugins\Deformer}
+access_key: ${DEFORMER_ACCESS_KEY}
+access_key_type: ${DEFORMER_ACCESS_KEY_TYPE}
+development_mode: ${DEFORMER_DEVELOPMENT_MODE:False}
+plugins_dev_storage: ${DEFORMER_PLUGINS_DEV_STORAGE:pre-builds}
+log:
+  level: ${DEFORMER_LOG_LEVEL:INFO}
+  host: ${DEFORMER_LOG_HOST}
+  port: ${DEFORMER_LOG_PORT:9254}

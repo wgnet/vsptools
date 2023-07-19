@@ -1,0 +1,14 @@
+#!/bin/sh
+
+CHECKER="Tools/git/hooks-checker/HooksChecker/commit_msg_checker.py"
+
+if [[ -f "${CHECKER}" ]]; then 
+    py ${CHECKER} $1
+    exit $?
+else
+    echo "Warning: Hook-checker \"${CHECKER}\" not found.";
+    exit 0
+fi
+
+echo "End"
+exit 2

@@ -1,0 +1,104 @@
+version: '3.7'
+
+services:
+  es_01:
+    image: artifactory.geoproxy.iv/vsp-docker/tools/elasticsearch:7.15.2
+    user: 1000:1000
+    volumes:
+      #- elasticVolume:/usr/share/elasticsearch/data
+      - ./elk_setup/elasticsearch_01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "http://localhost:8080"
+      xpack.security.enabled: "false"
+      indices.memory.index_buffer_size: "50%"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    profiles:
+      - node_01
+
+  es_02:
+    image: artifactory.geoproxy.iv/vsp-docker/tools/elasticsearch:7.15.2
+    user: 1000:1000
+    volumes:
+      #- elasticVolume:/usr/share/elasticsearch/data
+      - ./elk_setup/elasticsearch_02.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "http://localhost:8080"
+      xpack.security.enabled: "false"
+      indices.memory.index_buffer_size: "50%"
+    ports:
+      - 9202:9200
+      - 9302:9300
+    profiles:
+      - node_02
+
+  es_03:
+    image: artifactory.geoproxy.iv/vsp-docker/tools/elasticsearch:7.15.2
+    user: 1000:1000
+    volumes:
+      #- elasticVolume:/usr/share/elasticsearch/data
+      - ./elk_setup/elasticsearch_03.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "http://localhost:8080"
+      xpack.security.enabled: "false"
+      indices.memory.index_buffer_size: "50%"
+    ports:
+      - 9203:9200
+      - 9303:9300
+    profiles:
+      - node_03
+      
+
+  mongo:
+    image: artifactory.geoproxy.iv:8081/vsp-docker/tools/mongo:5.0.5
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongoVolume:/data/db
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"localhost:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    restart: always
+    profiles:
+      - infrastructure
+
+  elasticvue:
+    image: artifactory.geoproxy.iv:8081/vsp-docker/tools/elasticvue:0.40.1
+    ports:
+      - "8080:8080"
+    profiles:
+      - infrastructure
+
+volumes:
+  mongoVolume:
+  elasticVolume:

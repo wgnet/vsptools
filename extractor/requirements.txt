@@ -1,0 +1,6 @@
+--trusted-host artifactory.geoproxy.iv
+--index-url http://artifactory.geoproxy.iv/artifactory/api/pypi/vsp-pypi/simple
+
+configargparse~=1.5.3
+pyyaml~=5.3.1
+deformer~=1.1.4

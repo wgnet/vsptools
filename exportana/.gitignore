@@ -1,0 +1,52 @@
+# Byte-compiled
+*.pyc
+*.db
+
+# Distribution
+*.egg-info/
+dist/
+
+# Unit test / coverage reports
+.cache/
+.coverage
+.coverage.*
+.hypothesis/
+.tox/
+.pytest_cache
+
+junit.xml
+
+# Environments
+.venv
+venv/
+
+# Poetry
+poetry.lock
+
+# IDE
+.idea
+.vscode
+
+# Project specific
+*.log
+*.log.[0-9]
+*.log.[0-9][0-9]
+*.log.[0-9][0-9][0-9]
+dump
+exportana.conf
+.elastic-data
+.mongo-data
+
+# envs
+.env
+
+# Build
+tools/build/versioning/metadata.json
+
+# Deploy (development)
+deploy/dev/prf-wizard/manager/docker-compose.yml
+deploy/dev/prf-wizard/manager-environment/docker-compose.yml
+deploy/dev/prf-wizard/configs/*.yml
+
+deploy/dev/prf-wizard/.temp/*
+

@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  manager:
+    image: {{artifactory_manager}}:{{exportana_version}}
+    ports:
+      - "{{manager_port}}:30000"
+    environment:
+      - DEPLOY_ARGS=\
+        --config {{manager_config_name}} \
+        --source {{manager_container_source_trace_sessions}} \
+        --perfana {{perfana_url}} \
+        --work-mode manager \
+        --bitbucket {{bitbucket_url}} \
+        --elastic {{elastic_url}} \
+        --exportana_extra_args {{manager_extra_args}} \
+        --mongo-url mongodb://mongo_db:27017
+    volumes:
+      - {{unrealinsights_source}}:{{manager_container_source_trace_sessions}}/TraceSessions

@@ -1,0 +1,120 @@
+version: "3.7"
+
+services:
+  perfana:
+    image: artifactory.geoproxy.iv:8081/wows-autoqa/perfana:2.10.0
+    restart: on-failure
+    ports:
+      - "5050:5050"
+    environment:
+      MONGO_CONNECTION: mongo:27017:PerfanaV2
+      ES_URL: http://elasticsearch:9200/
+      SHARED_DIR: "./shared_dir"
+    command: gunicorn server:app --preload --workers 2 --bind 0.0.0.0:5050 --timeout 60
+    depends_on:
+      - elasticsearch
+      - mongo
+    profiles:
+      - perfana
+
+  elasticsearch:
+    image: artifactory.geoproxy.iv:8081/vsp-docker/tools/elasticsearch:7.15.2
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticVolume:/usr/share/elasticsearch/data
+    environment:
+      discovery.type: "single-node"
+      http.cors.enabled: "true"
+      http.cors.allow-origin: "http://localhost:8080"
+      logger.level: INFO
+      ES_JAVA_OPTS: "-Xms4g -Xmx4g"  # Limit memory usage
+      xpack.security.enabled: "false"
+      indices.memory.index_buffer_size: "50%"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"  # Use at most 50% of one CPU core
+          memory: 4G
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        hard: 65536
+        soft: 65536
+    profiles:
+      - infrastructure
+
+  logstash:
+    image: artifactory.geoproxy.iv/vsp-docker/tools/logstash:7.15.2
+    ports:
+      - "9360:9360"
+    volumes:
+      - ./config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+      - ./config/pipelines:/usr/share/logstash/config/pipelines:ro
+    profiles:
+      - infrastructure
+
+  mongo:
+    image: artifactory.geoproxy.iv:8081/vsp-docker/tools/mongo:5.0.5
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongoVolume:/data/db
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"localhost:27017\"}]}).ok || rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    restart: always
+    profiles:
+      - infrastructure
+
+  elasticvue:
+    image: artifactory.geoproxy.iv:8081/vsp-docker/tools/elasticvue:0.40.1
+    ports:
+      - "8080:8080"
+    profiles:
+      - infrastructure
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    volumes:
+      - ./:/etc/prometheus/
+    restart: unless-stopped
+    profiles:
+      - infrastructure
+
+  manager:
+    build:
+      context: ../../exportana/
+    ports:
+      - "8000:8000"
+      - "30000:30000"
+    command: >-
+        --config exportana_deploy.conf
+        --trace-sessions-dir /code/TraceSessions
+        --profiling-dir /code/Profiling
+        --perfana http://perfana:5050
+        --work-mode manager
+        --bitbucket https://user:token@bitbucket/scm/vsp/game.git
+        --elastic elasticsearch:9200 
+        --mongo-url mongodb://mongo:27017
+    volumes:
+      - ../../../UnrealInsights/Engine/Programs/UnrealInsights/Saved/TraceSessions:/code/TraceSessions
+      - ../../../UnrealInsights/Engine/Programs/UnrealInsights/Saved/Profiling:/code/Profiling
+    profiles:
+      - exportana
+
+volumes:
+  mongoVolume:
+  elasticVolume:
+

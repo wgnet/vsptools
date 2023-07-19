@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "extractor"
+version = "0.1.0"
+description = ""
+authors = [""]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+ConfigArgParse = "^1.5"
+PyYAML = "^5.4.1"
+deformer = "^1.1.4"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

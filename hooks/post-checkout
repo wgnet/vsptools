@@ -1,0 +1,19 @@
+#!/bin/bash
+post_checkout()
+{
+    command -v git-lfs >/dev/null 2>&1 || { echo >&2 "\nThis repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting .git/hooks/post-checkout.\n"; exit 2; }
+    # INFO: We don't use it: https://www.mankier.com/1/git-lfs-post-checkout
+    # git lfs post-checkout "$@"
+
+    GET_DEPENDENCIES="Tools/utils/get_dependencies.bat"
+    if [[ -f "${GET_DEPENDENCIES}" ]]; then
+        "${GET_DEPENDENCIES}";
+    else
+        echo "${GET_DEPENDENCIES} not found";
+    fi
+}
+
+if [ "$1" != "$2" ]
+    then
+        post_checkout $@
+fi

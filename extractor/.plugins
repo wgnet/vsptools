@@ -1,0 +1,3 @@
+plugins:
+  VSPPerfCollector:
+    version: 1.4.5

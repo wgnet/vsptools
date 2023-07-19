@@ -1,0 +1,114 @@
+{
+    "data": {
+        "selectedMapping": "properties",
+        "selectedIndices": [
+            {
+                "alias": "",
+                "index": "$trace_name",
+                "mappings": [
+                    "properties"
+                ]
+            }
+        ],
+        "selectedMetrics": $selected_metrics,
+        "metrics": $metrics,
+        "filters": [
+            {
+                "name": "test_name",
+                "values": [
+                    "$test_name"
+                ],
+                "selected": [
+                    "$test_name"
+                ]
+            },
+            {
+                "name": "test_id",
+                "values": [
+                    "$test_id"
+                ],
+                "selected": [
+                    "$test_id"
+                ]
+            },
+            {
+                "name": "version",
+                "values": [
+                    "$version"
+                ],
+                "selected": [
+                    "$version"
+                ]
+            },
+            {
+                "name": "build",
+                "values": [
+                    "$build"
+                ],
+                "selected": [
+                    "$build"
+                ]
+            },
+            {
+                "name": "test_start",
+                "values": [
+                    "$test_start"
+                ],
+                "selected": [
+                    "$test_start"
+                ]
+            },
+            {
+                "name": "title",
+                "values": [
+                    "$title"
+                ],
+                "selected": []
+            },
+            {
+                "name": "workstation",
+                "values": [
+                    "$workstation"
+                ],
+                "selected": [
+                    "$workstation"
+                ]
+            },
+            {
+                "name": "parameter",
+                "values": [
+                    "$parameter"
+                ],
+                "selected": [
+                    "$parameter"
+                ]
+            },
+            {
+                "name": "type",
+                "values": [
+                    "$type"
+                ],
+                "selected": [
+                    "$type"
+                ]
+            }
+        ],
+        "tabsBy": [
+            "test_name"
+        ],
+        "seriesBy": [
+            "test_id"
+        ],
+        "dataSettings": {
+            "aggInterval": "1s",
+            "compareWith": null,
+            "xZoom": null,
+            "range": null
+        },
+        "selectedMetricsAggs": $selected_metrics_aggs,
+        "chartAggregation": [
+            "avg"
+        ]
+    },
+    "uid": "$layout_id"
+}

@@ -1,0 +1,4 @@
+FROM mcr.microsoft.com/windows:2004
+ADD Engine C:/Engine
+WORKDIR "C:\\Engine\\Binaries\\Win64"
+CMD ["$program"]

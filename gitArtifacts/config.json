@@ -1,0 +1,42 @@
+{
+    "GIT_ARTIFACTS_WC_ROOT": "./../../../",
+    "GIT_ARTIFACTS_CACHE_DIR": "./../.artifacts_cache",
+    "GIT_ARTIFACTS_REPOSITORY_URL": "http://artifactory.geoproxy.iv/artifactory/vsp-artifacts",
+    "GIT_ARTIFACTS_STORAGE_PATTERN": "{server_url}/{project}/",
+    "GIT_ARTIFACTS_ARTIFACTS_PATTERN": "{build_id}-{project}-{platform}.zip",
+    "GIT_ARTIFACTS_ALIAS_SUFFIX": ".alias",
+    "profiles": {
+        "default": ["vsp_PaP"],
+        "programmers": []
+    },
+    "projects": [
+        {
+            "name": "VSP Project and Plugins",
+            "id": "VSP_PaP",
+            "paths": {
+                "Win64": [
+                    "Binaries/Win64/VERSION",
+                    "Binaries/Win64/metadata.json",
+                    "Binaries/Win64/ProjectVSPEditor.target",
+                    "Binaries/Win64/UE4Editor.modules",
+                    "Binaries/Win64/UE4Editor-*.dll",
+                    "Plugins/**/Binaries/Win64/UE4Editor-*.dll",
+                    "Plugins/**/Binaries/Win64/UE4Editor.modules"
+                ],
+                "Linux": [
+                    "Binaries/Linux/VERSION",
+                    "Binaries/Linux/metadata.json",
+                    "Binaries/Linux/ProjectVSPEditor.target",
+                    "Binaries/Linux/UE4Editor.modules",
+                    "Binaries/Linux/libUE4Editor-*.so",
+                    "Plugins/**/Binaries/Linux/libUE4Editor-*.so",
+                    "Plugins/**/Binaries/Linux/UE4Editor.modules"
+                ]
+            },
+            "clean_paths": [
+                "Binaries/Win64",
+                "Plugins/**/Binaries/Win64"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "exportana"
+version = "0.2.0"
+description = ""
+authors = [""]
+include = ["exportana.conf.example", "*.conf", "perfana.*.layout"]
+readme = ""
+
+[tool.poetry.dependencies]
+python = "~3.8"
+elasticsearch = { extras = ["async"], version = "~7.13.0" }
+ConfigArgParse = "~1.4.1"
+PyYAML = "~5.4.1"
+watchdog = "~2.1.2"
+paramiko = "~2.11.0"
+dnspython = "~2.1.0"
+requests = "~2.26.0"
+atlassian-python-api = "~3.13.2"
+pydantic = "~1.8.2"
+fastapi = "~0.78.0"
+uvicorn = "~0.15.0"
+pymongo = "~3.12.2"
+motor = "~2.5.1"
+httpx = "~0.21.1"
+aioschedule = "~0.5.2"
+prometheus-client = "~0.14.1"
+python-logstash-async = "^2.5.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "~6.2.4"
+isort = { extras = ["pyproject"], version = "~5.9.3" }
+
+[tool.isort]
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+indent = '    '
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[tool.poetry.scripts]
+exportana = "exportana.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

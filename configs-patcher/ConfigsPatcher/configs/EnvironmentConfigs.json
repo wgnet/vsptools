@@ -1,0 +1,52 @@
+{
+    "development": {
+        "client": [
+            {
+                "base_path": "Config/DefaultEngine.ini",
+                "patch_path": "Config/ConfigPatches/Engine_development_client.ini"
+            }
+        ],
+        "server": [
+            {
+                "base_path": "Config/DefaultEngine.ini",
+                "patch_path": "Config/ConfigPatches/Engine_development_server.ini"
+            },
+        ]
+    },
+    "stage": {
+        "client": [
+            {
+                "base_path": "Config/DefaultGame.ini",
+                "patch_path": "Config/ConfigPatches/Game_stage_client.ini"
+            }
+        ]
+    },
+    "rc": {
+        "client": [
+            {
+                "base_path": "Config/DefaultGame.ini",
+                "patch_path": "Config/ConfigPatches/Game_rc_client.ini"
+            }
+        ]
+    },
+    "loc": {
+        "client": [
+            {
+                "base_path": "Config/DefaultGame.ini",
+                "patch_path": "Config/ConfigPatches/Game_loc_client.ini"
+            }
+        ]
+    },
+    "production": {
+        "server": [
+            {
+                "base_path": "Config/DefaultEngine.ini",
+                "patch_path": "Config/ConfigPatches/Engine_development_server.ini"
+            },
+            {
+                "base_path": "Plugins/JSONParams/Config/DefaultJSONParams.ini",
+                "patch_path": "Plugins/JSONParams/Config/ConfigPatches/JSONParams_development_server.ini"
+            }
+        ]
+    }
+}

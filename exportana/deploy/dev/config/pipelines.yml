@@ -1,0 +1,4 @@
+- pipeline.id: exportana
+  pipeline.workers: 1
+  pipeline.batch.size: 1
+  path.config: "./config/pipelines/logstash.conf"

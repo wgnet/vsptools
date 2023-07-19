@@ -1,0 +1,111 @@
+# Run remote Unreal Insights via SSH
+#insights: ssh://user:pass@r1-vsp-trace-01
+
+# Run local Unreal Insights
+#insights: file:///C:/UnrealInsights/UnrealInsights.exe
+
+# Run local Unreal Insights from shared folder
+#insights: file://r1-vsp-trace-01/UnrealInsights/UnrealInsights.exe
+
+trace-sessions-dir: C:\Users\job-vsp_autotest_bot\AppData\Local\UnrealInsights\Saved\TraceSessions
+profiling-dir:  C:\Users\job-vsp_autotest_bot\AppData\Local\UnrealInsights\Saved\Profiling
+
+# Overrides for this specific fields
+# title: test
+# build: test
+# workstation: localhost
+
+gui: true
+normalize:
+  - "Start_performance_test_trace"
+  - "End_performance_test_trace"
+perfana: http://r1-vsp-perf-mon:5050
+bitbucket: https://user:token@local/scm/vsp/game.git
+
+elasticsearch-index-prefix: prf
+
+# To allow backward compatibility
+trace-info: "vsp_UvspGameInstance_Init"
+
+# Extra bookmarks metadata names array to add to elastic. Metadata bookmarks must follow template: `METADATA:bookmark_param_name:value`
+bookmark-metadata:
+
+# Cleanup settings
+cleanup-master-days: 8
+cleanup-release-days: inf
+cleanup-branches-days: 2
+cleanup-interval-hours: 2
+cleanup-unprocessed: False
+cleanup-ignore:
+
+alert-disk-space: 20GB
+alert-from: job-vsp_autotest_bot@local.net
+alert-login: job-vsp_autotest_bot@local.net
+alert-pass: password
+alert-to:
+  - "admin@local.net"
+
+# Available formats:
+# "ThreadName1:MetricName1/MetricAlias1"
+# "ThreadName2:MetricName2"
+# "ThreadName3+:MetricName3/MetricAlias3"
+# "ThreadName4:MetricName4+/MetricAlias4"
+# "ThreadName5:Metric+Name5/MetricAlias5"
+# "ThreadName6:Metric*Name6/Super Metric [*] Alias6" e.g. "MetricBigName6" -> "Super Metric [Big] Alias6"
+# "ThreadName7:Metric*Name7/MetricAlias7" e.g. "MetricBigName7" -> "MetricAlias6 Big"
+events:
+  - GameThread:FEngineLoop/FEngineLoop (1000 div FPS)
+  - GameThread:STAT_FEngineLoop_UpdateTimeAndHandleMaxTickRate/GT[01] STAT FEngineLoop UpdateTimeAndHandleMaxTickRate (Frame time adjustment)
+  - GameThread:GameEngineTick/GT[02] GameEngineTick (Game Thread frame time)
+  - GameThread:UWorld_Tick/GT[02_01] UWorld Tick
+  - GameThread:NetTickTime/GT[02_01_01] NetTickTime (Process net input)
+  - GameThread:NavTickTime/GT[02_01_02] NavTickTime
+  - GameThread:vspUE World TickPreActorTick/GT[02_01_03] vspUE World TickPreActorTick
+  - GameThread:vsp_UCompositeMesh WorldPreActorsTick/GT[02_01_03_01] vsp UCompositeMesh WorldPreActorsTick
+  - GameThread:vsp_FMovementTracker GrabState/GT[02_01_03_01_01] vsp FMovementTracker GrabState (Movement tracker saves current pose)
+  - GameThread:vsp_FMovementTracker ForceTickAnimation/GT[02_01_03_01_01_01] vsp FMovementTracker ForceTickAnimation
+  - GameThread:QueueTicks/GT[02_01_04] QueueTicks (Component ticks mostly)
+  - GameThread:vspUE_FTickTaskLevel QueueAllTicks/GT[02_01_04_01] vspUE FTIckTaskLevel QueueAllTicks
+  - GameThread:vspUE_FTickFunction QueueTickFunction/GT[02_01_04_01_01] vspUE FTickFunction QueueTickFunction
+  - GameThread:TickTime/GT[02_01_05] TickTime (Actor tick mostly)
+  - GameThread:TG_PrePhysics/GT[02_01_05_01] TG PrePhysics
+  - GameThread:TG_StartPhysics/GT[02_01_05_02] TG StartPhysics(PhysX)
+  - GameThread:StartTG_DuringPhysics/GT[02_01_05_03] StartTG DuringPhysics
+  - GameThread:vspUE_FTickFunctionTask_DoTask/GT[02_01_05_0X_01] vspUE FTickFunctionTask DoTask (Actor task)
+  - GameThread:FetchResultsTime/GT[02_01_05_02_01] FetchResultsTime
+  - GameThread:STAT_DispatchTickGroup/GT[02_01_05_03_01] STAT DispatchTickGroup
+  - GameThread:GTTickableTime/GT[02_01_06] GTTickableTime
+  - GameThread:vspUE_UEnvQueryManager Tick/GT[02_01_06_01] vspUE UEnvQueryManager Tick (EQS queries)
+  - GameThread:DestroyActor/GT[02_01_06_02] DestroyActor
+  - GameThread:NetBroadcastTickTime/GT[02_01_07] NetBroadcastTickTime (Prepare net output)
+  - GameThread:ConsiderActorsTime/GT[02_01_07_01] ConsiderActorsTime (Collect actors for replication)
+  - GameThread:PrioritizeActorsTime/GT[02_01_07_02] PrioritizeActorsTime (Split actors bt connections and prioritize)
+  - GameThread:ProcessPrioritizedActorsTime/GT[02_01_07_03] ProcessPrioritizedActorsTime (Replication)
+  - GameThread:vspUE_UActorChannel_ReplicateActor/GT[02_01_07_03_01] vspUE UActorChannel ReplicateActor (Actor replication)
+  - GameThread:vspUE_UActorChannel_ReplicateActor_Step/GT[02_01_07_03_01_01] vspUE UActorChannel ReplicateActor Step
+  - GameThread:GCMarkTime/GT[02_01_08] GCMarkTime (Garbage Collector)
+  - GameThread:STAT_UGameEngine_Tick_CheckCaptures/GT[02_02] STAT UGameEngine Tick CheckCaptures (Reflection captures)
+  - GameThread:ULandscapeSubsystem/GT[02_03] ULandscapeSubsystem (Foliage)
+  - GameThread:STAT_FEngineLoop WaitForMovieToFinish/GT[03] STAT FEngineLoop WaitForMovieToFinish (Movie player)
+  - GameThread:SlateTick(TimeandWidgets)/GT[04] SlateTick (TimeandWidgets)
+  - GameThread:FrameSyncTime/GT[05] FrameSyncTime (Wait render thread)
+  - GameThread:DeferredTickTime/GT[06] DeferredTickTime (Some deferred tasks)
+  - GameThread:AnimGameThreadTime/GT[02_01_0X] AnimGameThreadTime
+  - GPU:Unaccounted/GPU[01] 3DSceneRendering
+  - GPU:VisibilityCommands/GPU[01_01] VisibilityCommands (First of all occlusion culling)
+  - GPU:GPUSceneUpdate/GPU[01_02] GPUSceneUpdate (First of all Runtime Virtual Texture update)
+  - GPU:Prepass/GPU[01_03] Prepass (ZBuffer rendering)
+  - GPU:BasePass/GPU[01_04] BasePass (GBuffer rendering)
+  - GPU:Postprocessing/GPU[01_05] Postprocessing
+  - GPU:SlateUI/GPU[02] SlateUI (User Interface rendering)
+  - GPU:Translucency/GPU[01_04] Translucency
+  - GPU:ShadowDepths/GPU[01_05] ShadowDepths
+  - RenderThread+:BeginFrame/RT[01] RenderThreadFrame (Render frame time witch CPU stall)
+  - RenderThread+:CPUStall-WaitForEvent/RT[01_01] CPUStall (Wait other threads)
+  - RenderThread+:FDeferredShadingSceneRenderer_Render/RT[01_02] DeferredShadingSceneRenderer Render (3D scene render commands)
+  - RenderThread+:FDeferredShadingSceneRenderer_InitViews/RT[01_02_01] DeferredShadingSceneRenderer InitViews (Visibility calculation and marking HLOD Frustrum OcclusionCull)
+  - RenderThread+:SlateDrawWindow_RenderThread/RT[01_03] SlateDrawWindow (Slate render commands)
+
+elastic:
+  - http://127.0.0.1:9200
+  - http://127.0.0.1:9201

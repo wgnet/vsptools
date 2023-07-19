@@ -1,0 +1,5 @@
+installation_folder: ./.temp
+
+ue_version: UE_VERSION
+exportana_version: EXPORTANA_VERSION
+perfana_version: PERFANA_VERSION

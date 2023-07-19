@@ -1,0 +1,39 @@
+# Byte-compiled
+*.pyc
+*.zip
+
+# Distribution
+*.egg-info/
+dist/
+
+Tracer*
+UnrealInsights-*
+
+# Unit test / coverage reports
+.cache/
+.coverage
+.coverage.*
+.hypothesis/
+.tox/
+.pytest_cache
+
+junit.xml
+
+# Environments
+.venv
+venv/
+
+# Poetry
+poetry.lock
+
+# IDE
+.idea
+.vscode
+
+# Project specific
+*.log
+
+# envs
+.env
+
+Unreal*/

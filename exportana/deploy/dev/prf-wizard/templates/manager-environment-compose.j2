@@ -1,0 +1,74 @@
+version: "3.7"
+
+networks:
+  exportana_network:
+
+services:
+  perfana:
+    restart: unless-stopped
+    image: {{artifactory_manager_environment}}/perfana:{{perfana_version}}
+    environment:
+      MONGO_CONNECTION: mongodb://mongo_db:27017
+      MONGO_DB: PerfanaV2
+      ES_URL: http://elasticsearch
+    command: gunicorn server:app --preload --workers 2 --bind 0.0.0.0:5050 --timeout 60
+    ports:
+      - "5050:5050"
+    depends_on:
+      - elasticsearch
+      - mongo_db
+    links:
+      - elasticsearch
+    networks:
+      - exportana_network
+
+  elasticsearch:
+    restart: unless-stopped
+    image: {{artifactory_manager_environment}}/elasticsearch:{{elk_stack_version}}
+    user: elasticsearch:elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms4g -Xmx4g"  # Limit memory usage
+    volumes:
+      - ./configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elastic-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - exportana_network
+
+  kibana:
+    restart: unless-stopped
+    image: {{artifactory_manager_environment}}/kibana:{{elk_stack_version}}
+    volumes:
+      - ./configs/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - exportana_network
+
+  mongo_db:
+    restart: unless-stopped
+    image: {{artifactory_manager_environment}}/mongo:{{manager_mongo_version}}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    healthcheck:
+      test: >
+        test
+        $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"localhost:27017\"}]}).ok ||
+        rs.status().ok" | mongo --port 27017 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    networks:
+      - exportana_network
+
+volumes:
+  elastic-data:
+  mongo-data:

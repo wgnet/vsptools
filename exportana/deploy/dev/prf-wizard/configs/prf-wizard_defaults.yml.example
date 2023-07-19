@@ -1,0 +1,44 @@
+# Installation components
+setup: y
+update: y
+tracer: y
+exportana_worker: y
+exportana_manager: y
+
+# Tracer
+tracer_artifact_name: Tracer.zip
+tracer_artifactory_repository: vsp-builds/perfomance/Tracer
+
+# Unreal Insights
+unrealinsights_artifact_name: UnrealInsights.zip
+unrealinsights_artifactory_repository: vsp-builds/perfomance/UnrealInsights
+
+# Worker
+worker_name:
+worker_port: 30001
+worker_extra_args:
+worker_config_name: exportana_deploy.conf
+worker_artifact_name: Exportana.zip
+worker_artifactory_repository: vsp-builds/perfomance/Exportana
+
+# Manager
+manager_url: http://localhost:30000
+manager_port: 30000
+manager_extra_args:
+manager_config_name: exportana_deploy.conf
+manager_mongo_version: 5.0.5
+manager_artifactory_repository: vsp-docker/perfomance/exportana
+manager_env_artifactory_repository: vsp-docker/tools
+manager_container_source_trace_sessions: /code
+
+# Urls
+perfana_url: http://localhost:5050
+elastic_url: http://elastic_login:elastic_password@localhost:9200
+bitbucket_url: https://user:token@bitbucket/scm/vsp/game.git
+artifactory_url: artifactory.geoproxy.iv
+
+# Environment versions
+elk_stack_version: 7.15.2
+
+# Debug (turn on print all params at start)
+debug_mode: y

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PRE_COMMIT_CHECKER="Tools/git/hooks-checker/HooksChecker/pre_commit_checker.py"
+
+if [[ -f "${PRE_COMMIT_CHECKER}" ]]; then 
+    py ${PRE_COMMIT_CHECKER};
+    exit $?
+else
+    echo "Error: Hook-checker \"${PRE_COMMIT_CHECKER}\" not found.";
+    echo "Error: Commit without checking forbidden. Process canceled.";
+    exit 1;
+fi
+
+echo "End"
+exit 2

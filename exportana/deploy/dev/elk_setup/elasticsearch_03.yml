@@ -1,0 +1,23 @@
+node:
+  name: es_03
+  roles: [ data, master ]
+
+cluster:
+  name: main
+  initial_master_nodes:
+    - es_01
+    - es_02
+    - es_03
+
+discovery.seed_hosts:
+  - es_02
+  - es_01
+
+network:
+  host: 0.0.0.0
+  publish_host: es_03
+
+# http.port: 9200
+# transport.port: 9300
+
+xpack.security.enabled: false

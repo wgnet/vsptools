@@ -1,0 +1,41 @@
+{
+    "Content/**/A_*.uasset": {
+        "max": 10485760
+    },
+    "Content/**/PHYS_*.uasset": {
+        "max": 2097152
+    },
+    "Content/**/S_*.uasset": {
+        "max": 20971520
+    },
+    "Content/**/SKEL_*.uasset": {
+        "max": 1048576
+    },
+    "Content/**/SK_*.uasset": {
+        "max": 104857600
+    },
+    "Content/**/*.uasset": {
+        "max": 1153208582
+    },
+    "Content/**/*.umap": {
+        "max": 510054117
+    },
+    "Content/**/*.tga": {
+        "max": 270435500
+    },
+    "Content/**/*.bk2": {
+        "max": 16103940
+    },
+    "Content/**/*.mp4": {
+        "max": 6343763
+    },
+    "Content/*.archive": {
+        "max": 28243178
+    },
+    "Content/Localization": {
+        "min": 0
+    },
+    "*": {
+        "min": 0, "max": 2147483648
+    }
+}
